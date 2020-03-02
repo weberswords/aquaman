@@ -11,6 +11,7 @@ pipeline job:
 	}
 
 output:
+	
 	Started by user admin
 	Running in Durability level: MAX_SURVIVABILITY
 	[Pipeline] Start of Pipeline
