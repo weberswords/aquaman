@@ -4,31 +4,35 @@
 3. Create a Jenkins Pipeline that builds a Docker image (any image) from the Jenkins Agent, jnlp-slave.
 4. Run the pipeline task and see that the image was created.
 5. Send a summary of what you did and the challenges you faced including: 
-A. Docker run commands for both containers
-Master:
-docker run -d -p 8080:8080 -p 50000:50000 -v /var/jenkins_home jenkins/jenkins:lts
 
-Agent:
-docker run -dit jenkins/jnlp-slave -url http://<ip address>:8080 <secret key from master> agent-pimento     
-		
+A. Docker run commands for both containers
+- Master:
+	`docker run -d -p 8080:8080 -p 50000:50000 -v /var/jenkins_home jenkins/jenkins:lts`
+
+- Agent:
+	`docker run -dit jenkins/jnlp-slave -url http://<ip address>:8080 <secret key from master> agent-pimento` 
+
 B. Docker image output showing the image created 
 
 
 ## Challenge:
 After running 
 
-docker run -it jenkins/jnlp-slave -url http://localhost:8080 3eb1b2f46d6b1dedc79885392c0c857be81fe4a6fdd293833c85fbca8fb31080 agent-pimento
+`docker run -it jenkins/jnlp-slave -url http://localhost:8080 <secret-key> agent-pimento`
 
 I got error:
 
-SEVERE: Failed to connect to http://localhost:8080/tcpSlaveAgentListener/: Connection refused (Connection refused)
-java.io.IOException: Failed to connect to http://localhost:8080/tcpSlaveAgentListener/: Connection refused (Connection refused)
+	```SEVERE: Failed to connect to http://localhost:8080/tcpSlaveAgentListener/: Connection refused (Connection refused)
+	java.io.IOException: Failed to connect to http://localhost:8080/tcpSlaveAgentListener/: Connection refused (Connection refused)```
 
 ## Solution:
 This was corrected by using the IP address rather than just localhost.
 
 ## Challenge:
-Running pipeline job on Java agent works successfully (see [java-agent.md](java-agent.md)). Running the job on the docker jnlp-slave agent fails with:
+
+Running pipeline job on Java agent works successfully (see [java-agent.md](java-agent.md)). 
+
+```Running the job on the docker jnlp-slave agent fails with:
 	Started by user admin
 	Running in Durability level: MAX_SURVIVABILITY
 	[Pipeline] Start of Pipeline
@@ -122,4 +126,4 @@ Running pipeline job on Java agent works successfully (see [java-agent.md](java-
 		at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
 		at hudson.remoting.Engine$1.lambda$newThread$0(Engine.java:117)
 		at java.lang.Thread.run(Thread.java:748)
-	Finished: FAILURE
+	Finished: FAILURE```
