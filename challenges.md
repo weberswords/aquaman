@@ -139,4 +139,29 @@ Results in the specific access denied error.
 	INFO: Using Remoting version: 4.0.1
 	Exception in thread "main" java.nio.file.AccessDeniedException: /var/jenkins_home
 
+Bindmount a volume on master
+
+`docker run -d -p 8080:8080 -p 50000:50000 -v /jenkins_home jenkins/jenkins:lts`
+
+`docker run -it jenkins/jnlp-slave -url http://167.99.106.130:8080 c9ee27b35a675ab1739a796d3b1f820ec900be81286a1f150e692bf8387ed0f2 pimento`
+
+Still returns same error.
+Bindmount a volume on agent
+
+	docker run -it -v /jenkins_home jenkins/jnlp-slave -url http://167.99.106.130:8080 c9ee27b35a675ab1739a796d3b1f820ec900be81286a1f150e692bf8387ed0f2 pimento
+
+Same error. Chown /jenkins_home in the host container and then start the agent container again
+
 ## Solution
+Just to verify that it's a permission issue with the folder on the agent. I changed the permissions to 777 for testing. I'd want to find a better solution as that's not secure.
+
+## Challenge
+Docker not found
+
+## Solution
+Added Docker in global tool configuration. When trying to pull Docker image 
+	
+	Warning: failed to get default registry endpoint from daemon (Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?). Using system default: https://index.docker.io/v1/
+
+	Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
+	
