@@ -113,10 +113,12 @@ Running pipeline job on Java agent works successfully (see [java-agent.md](java-
 
 ## Investigations
 I have a user `jenkins` with permission in the `docker` group
+	
 	cat /etc/group | grep 'docker'
 	docker:x:999:jenkins
 
 I have given permission to user `jenkins` and the `docker` group to read and write to the folder and it's child folders 
+	
 	ls -lna /var/jenkins_home/
 	total 20
 	drwxr-xr-x  4 1000 999 4096 Mar  2 19:44 .
