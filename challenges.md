@@ -111,4 +111,18 @@ Running pipeline job on Java agent works successfully (see [java-agent.md](java-
 		at java.lang.Thread.run(Thread.java:748)
 	Finished: FAILURE
 
+## Investigations
+I have a user `jenkins` with permission in the `docker` group
+	cat /etc/group | grep 'docker'
+	docker:x:999:jenkins
+
+I have given permission to user `jenkins` and the `docker` group to read and write to the folder and it's child folders 
+	ls -lna /var/jenkins_home/
+	total 20
+	drwxr-xr-x  4 1000 999 4096 Mar  2 19:44 .
+	drwxr-xr-x 15    0   0 4096 Mar  2 04:57 ..
+	-rw-r--r--  1 1000 999  161 Feb 29 01:54 Dockerfile
+	drwxr-xr-x  2 1000 999 4096 Mar  2 19:44 agent-pimento
+	drwxr-xr-x  5 1000 999 4096 Mar  2 18:26 pimento2
+
 ## Solution
