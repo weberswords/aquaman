@@ -125,4 +125,16 @@ I have given permission to user `jenkins` and the `docker` group to read and wri
 	drwxr-xr-x  2 1000 999 4096 Mar  2 19:44 agent-pimento
 	drwxr-xr-x  5 1000 999 4096 Mar  2 18:26 pimento2
 
+Doing `docker run --user jenkins jenkins/jnlp-slave -url http://167.99.106.130:8080 b3c5f07d3eb2124ee7f30b164c7df3ed8f69c38ca7d1cf97750db430629caf50 -workDir="/var/jenkins_home/agent-pimento" agent-pimento`
+
+Results in the specific access denied error.
+
+	Mar 02, 2020 7:53:00 PM hudson.remoting.jnlp.Main createEngine
+	INFO: Setting up agent: agent-pimento
+	Mar 02, 2020 7:53:00 PM hudson.remoting.jnlp.Main$CuiListener <init>
+	INFO: Jenkins agent is running in headless mode.
+	Mar 02, 2020 7:53:00 PM hudson.remoting.Engine startEngine
+	INFO: Using Remoting version: 4.0.1
+	Exception in thread "main" java.nio.file.AccessDeniedException: /var/jenkins_home
+
 ## Solution
