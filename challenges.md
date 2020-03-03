@@ -139,27 +139,19 @@ Results in the specific access denied error.
 	INFO: Using Remoting version: 4.0.1
 	Exception in thread "main" java.nio.file.AccessDeniedException: /var/jenkins_home
 
-Bindmount a volume on master
+Chmod /jenkins_home in the host container and then start the agent container again.
+Chmod /jenkins_home (the mounted volume when starting the agent container) by entering the agent container  
 
-`docker run -d -p 8080:8080 -p 50000:50000 -v /jenkins_home jenkins/jenkins:lts`
-
-`docker run -it jenkins/jnlp-slave -url http://167.99.106.130:8080 c9ee27b35a675ab1739a796d3b1f820ec900be81286a1f150e692bf8387ed0f2 pimento`
-
-Still returns same error.
-Bindmount a volume on agent
-
-	docker run -it -v /jenkins_home jenkins/jnlp-slave -url http://167.99.106.130:8080 c9ee27b35a675ab1739a796d3b1f820ec900be81286a1f150e692bf8387ed0f2 pimento
-
-Same error. Chown /jenkins_home in the host container and then start the agent container again
+`docker exec -it -u root <container id> bash`
 
 ## Solution
-Just to verify that it's a permission issue with the folder on the agent. I changed the permissions to 777 for testing. I'd want to find a better solution as that's not secure.
+With Aaron's help, I realized I was mounting a volume to a path on the agent rather than keeping the path the same between both. After changing the mounting parameter, I could find the problematic folder. Just to verify that it's a permission issue with the folder on the agent. I changed the permissions to 777 for testing. I'd want to find a better solution as that's not secure.
 
 ## Challenge
 Docker not found
 
 ## Solution
-Added Docker in global tool configuration. 
+Added Docker in global tool configuration. In the ned, I went with the docker path bindmounting and docker unix socket bindmounting instead of using the global tool configuration with an initialization stage.
 
 ## Challenge
 When trying to pull Docker image 
@@ -172,5 +164,7 @@ When trying to pull Docker image
 Tried re-running master container and bindmounting the Docker Unix socket  
 `-v /var/run/docker.sock:/var/run/docker.sock`
 
+Bindmounting docker path as well and unix socket in the master container. Bindmount the unix socket in the master container and install docker using dockerfile to build custom image based on jenkins/jnlp-slave.
+
 ## Solution
-Build image for agent with docker using [Dockerfile.jnlp](Dockerfile.jnlp) because I got tired of rerunning commands. Run master container with bindmounting for docker path and docker unix socket. Run agent container with bindmounting for docker unix socket.
+Build image for agent with docker using [Dockerfile.jnlp](Dockerfile.jnlp) because I got tired of rerunning commands. Run master container with bindmounting for docker path and docker unix socket. Run agent container with bindmounting for docker unix socket. This took some docker exec'ing to start the docker service.
