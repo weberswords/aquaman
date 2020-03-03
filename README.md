@@ -7,9 +7,9 @@
 
 A. Docker run commands for both containers
 - Master:
-	`docker run -d -p 8080:8080 -p 50000:50000 -v /var/jenkins_home jenkins/jenkins:lts`
+	`docker run -p 8080:8080 -p 50000:50000 -v /jenkins_home -v /var/run/docker.sock:/var/run/docker.sock -v $(which docker):/usr/bin/docker jenkins/jenkins:lts`
 
 - Agent:
-	`docker run -dit jenkins/jnlp-slave -url http://<ip address>:8080 <secret key from master> agent-pimento` 
+	`docker run -it -v /jenkins_home -v /var/run/docker.sock:/var/run/docker.sock <custom image from dockerfile.jnlp> -url http://<host ip>:8080 <agent secret> <agent-name>`
 
-B. Docker image output showing the image created 
+B. Docker [image output showing the image created](docker-agent.md)

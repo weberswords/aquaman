@@ -159,9 +159,18 @@ Just to verify that it's a permission issue with the folder on the agent. I chan
 Docker not found
 
 ## Solution
-Added Docker in global tool configuration. When trying to pull Docker image 
+Added Docker in global tool configuration. 
+
+## Challenge
+When trying to pull Docker image 
 	
 	Warning: failed to get default registry endpoint from daemon (Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?). Using system default: https://index.docker.io/v1/
 
 	Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
-	
+
+## Investigation
+Tried re-running master container and bindmounting the Docker Unix socket  
+`-v /var/run/docker.sock:/var/run/docker.sock`
+
+## Solution
+Build image for agent with docker using [Dockerfile.jnlp](Dockerfile.jnlp) because I got tired of rerunning commands. Run master container with bindmounting for docker path and docker unix socket. Run agent container with bindmounting for docker unix socket.
