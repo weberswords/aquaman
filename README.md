@@ -13,3 +13,5 @@ A. Docker run commands for both containers
 	`docker run -it -v /jenkins_home -v /var/run/docker.sock:/var/run/docker.sock <custom image from dockerfile.jnlp> -url http://<host ip>:8080 <agent secret> <agent-name>`
 
 B. Docker [image output showing the image created](docker-agent.md)
+
+Note: the Dockerfile.jnlp was adapted from [this](https://medium.com/@prashant.vats/jenkins-master-and-slave-with-docker-b993dd031cbd) combined with my trial and error installing docker on the jnlp-agent node.
